@@ -8,9 +8,7 @@
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
       <user-name>root</user-name>
-      <introspection-schemas>*:example001</introspection-schemas>
       <resolve-scope>example001:</resolve-scope>
-      <unqualified-resolve-schemas>example001:</unqualified-resolve-schemas>
     </data-source>
   </component>
 </project>
