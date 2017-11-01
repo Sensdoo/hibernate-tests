@@ -53,7 +53,9 @@ public class HibernateContactDaoImpl implements HibernateContactDao {
 
     @Override
     public void delete(Contact contact) {
+        getSession().delete(contact);
 
+        LOG.info("Contact delete with id: " + contact.getId());
     }
 
     @Resource(name = "sessionFactory")

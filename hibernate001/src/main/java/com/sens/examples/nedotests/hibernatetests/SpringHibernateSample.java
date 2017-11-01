@@ -8,6 +8,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by momo on 29.10.2017.
@@ -20,6 +21,7 @@ public class SpringHibernateSample {
 
         HibernateContactDao dao = context.getBean("hibernateContactDao", HibernateContactDao.class);
 
+//        //Add Contact
 //        Contact contact = new Contact();
 //        contact.setFirstName("First");
 //        contact.setLastName("Last");
@@ -31,6 +33,25 @@ public class SpringHibernateSample {
 //        contact.addContactTelDetail(detail);
 //
 //        dao.save(contact);
+
+//        //Edit Contact
+//        Contact contact = dao.findById(1L);
+//        contact.setFirstName("Kim Fung");
+//        Set<ContactTelDetail> details = contact.getContactTelDetails();
+//        ContactTelDetail toDelete = null;
+//
+//        for (ContactTelDetail detail : details) {
+//            if (detail.getTelType().equals("Home")) {
+//                toDelete = detail;
+//            }
+//        }
+//
+//        contact.removeContactTelDetail(toDelete);
+//        dao.save(contact);
+
+//        //Delete Contact
+        Contact contact = dao.findById(2L);
+        dao.delete(contact);
 
         listContacts(dao.findAllWithDetail());
 
