@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="com.sens.examples" />
+
+    <!--Spring_4_dlya_professionalov.pdf страницы 298-301 конфигурации dataSource(пул, jndi, etc)-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="com.mysql.cj.jdbc.Driver"
+          p:url="jdbc:mysql://localhost:3306/example001?useUnicode=true&amp;characterEncoding=UTF-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false"
+          p:username="root"
+          p:password="root" />
+
+    <util:properties id="hibernateProperties">
+        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+        <!--Предотвращает выборку слишком большого объема данных пр наличии множество вложженых фссоциаций-->
+        <prop key="hibernate.max_fetch_depth">3</prop>
+        <!--количество выборок за раз, при резулитируещем запросе на 500 записей выборка произойдет в 10 заходов-->
+        <prop key="hibernate.jdbc.fetch_size">50</prop>
+        <!--Объеденяет запросы обновлений в гуппы и выполняет за раз-->
+        <prop key="hibernate.jdbc.batch_size">10</prop>
+        <!--Отображает sql запросы в консоль-->
+        <prop key="hibernate.show_sql">true</prop>
+    </util:properties>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:packagesToScan="com.sens.examples"
+          p:hibernateProperties-ref="hibernateProperties" />
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <tx:annotation-driven />
+
+    <!--<context:property-placeholder location="classpath:META-INF/config/jdbc.properties" />-->
+
+    <!--встроенная бд-->
+    <!--<jdbc:embedded-datasource id="dataSource" type="H2">-->
+        <!--<jdbc:script location="classpath:META-INF/sql/create.sql"/>-->
+        <!--<jdbc:script location="classpath:META-INF/sql/insert.sql"/>-->
+    <!--</jdbc:embedded-datasource>-->
+
+    <!--<bean id="contactDao" clacom.sens.examplesate.jdbc.JdbcContactDao" p:dataSource-ref="dataSource" />-->
+</beans>
