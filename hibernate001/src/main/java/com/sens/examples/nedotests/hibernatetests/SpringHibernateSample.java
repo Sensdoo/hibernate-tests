@@ -50,8 +50,8 @@ public class SpringHibernateSample {
 //        dao.save(contact);
 
 //        //Delete Contact
-        Contact contact = dao.findById(2L);
-        dao.delete(contact);
+//        Contact contact = dao.findById(2L);
+//        dao.delete(contact);
 
         listContacts(dao.findAllWithDetail());
 

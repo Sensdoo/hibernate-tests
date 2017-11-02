@@ -13,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "contact")
 @NamedQueries({
+        @NamedQuery(name = "Contact.findAll", query = "SELECT c FROM Contact c"),
         @NamedQuery(name = "Contact.findAllWithDetail",
            query = "SELECT DISTINCT c FROM Contact c LEFT JOIN FETCH c.contactTelDetails t LEFT JOIN FETCH c.hobbies h"),
         @NamedQuery(name = "Contact.findById",
