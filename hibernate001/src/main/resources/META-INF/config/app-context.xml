@@ -22,6 +22,9 @@
           p:username="root"
           p:password="root" />
 
+
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+
     <util:properties id="hibernateProperties">
         <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
         <!--Предотвращает выборку слишком большого объема данных пр наличии множество вложженых фссоциаций-->
@@ -34,14 +37,30 @@
         <prop key="hibernate.show_sql">true</prop>
     </util:properties>
 
+    <!--Работаем с бд при помощи jpa-->
+    <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+        <property name="packagesToScan" value="com.sens.examples" />
+        <property name="jpaProperties" ref="hibernateProperties" />
+    </bean>
+
+    <!--Работаем с бд при помощи hibernate-->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
           p:dataSource-ref="dataSource"
           p:packagesToScan="com.sens.examples"
           p:hibernateProperties-ref="hibernateProperties" />
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"
-          p:sessionFactory-ref="sessionFactory" />
+    <!--Для JPA-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="emf" />
+    </bean>
 
+    <!--для hibernate-->
+    <!--<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"-->
+          <!--p:sessionFactory-ref="sessionFactory" />-->
+
+    <!--необходим для работы аннотации @Transaction-->
     <tx:annotation-driven />
 
     <!--<context:property-placeholder location="classpath:META-INF/config/jdbc.properties" />-->
