@@ -20,6 +20,7 @@ import java.util.Set;
            query = "SELECT DISTINCT c FROM Contact c LEFT JOIN FETCH c.contactTelDetails t " +
                    "LEFT JOIN FETCH c.hobbies h WHERE c.id = :id")
 })
+@SqlResultSetMapping(name = "contactResult", entities = @EntityResult(entityClass = Contact.class))
 public class Contact implements Serializable {
 
     private Long id;

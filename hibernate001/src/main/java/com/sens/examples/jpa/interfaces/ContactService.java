@@ -12,6 +12,7 @@ public interface ContactService {
 
     List<Contact> findAll();
     List<Contact> findAllWithDetail();
+    List<Contact> findAllByNativeQuery();
     Contact findById(long id);
     Contact save(Contact contact);
     void delete(Contact contact);
