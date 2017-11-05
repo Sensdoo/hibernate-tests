@@ -2,8 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/c"
-       xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jdbc="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -11,7 +14,7 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx.xsd">
+       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <context:component-scan base-package="com.sens.examples" />
 
@@ -35,6 +38,7 @@
         <prop key="hibernate.jdbc.batch_size">10</prop>
         <!--Отображает sql запросы в консоль-->
         <prop key="hibernate.show_sql">true</prop>
+        <prop key="jadira.usertype.autoRegisterTypes">true</prop>
     </util:properties>
 
     <!--Работаем с бд при помощи jpatests-->
@@ -62,6 +66,13 @@
 
     <!--необходим для работы аннотации @Transaction-->
     <tx:annotation-driven />
+
+    <jpa:repositories base-package="com.sens.examples"
+                      entity-manager-factory-ref="emf"
+                      transaction-manager-ref="transactionManager" />
+
+    <bean id="auditorAwareBean" class="com.sens.examples.springdata.AuditorAwareBean" />
+    <jpa:auditing auditor-aware-ref="auditorAwareBean" />
 
     <!--<context:property-placeholder location="classpath:META-INF/config/jdbc.properties" />-->
 
